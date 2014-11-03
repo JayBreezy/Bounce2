@@ -20,7 +20,6 @@ NSString * receiverID = @"545133ff4a82b5e43b000003";
     //temporary, just testing
     if (self) {
         self.navigationItem.title = @"bounce";
-        
     }
     return self;
 }
@@ -31,17 +30,15 @@ NSString * receiverID = @"545133ff4a82b5e43b000003";
 }
 
 - (void)viewDidLoad
+/////HERE, MUST SAVE USER WHO SENT SONG AS PART OF TRACK
+
 {
     [super viewDidLoad];
+    self.SoundCloudTracksList = [[NSMutableArray alloc] init];
+    
     UINib *nib = [UINib nibWithNibName:@"TrackTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"TrackTableViewCell"];
-}
-
-//    self.SoundCloudTracksList = [[NSMutableArray alloc] init];
     
-//    UINib *nib = [UINib nibWithNibName:@"TrackTableViewCell" bundle:nil];
-//    [self.tableView registerNib:nib forCellReuseIdentifier:@"TrackTableViewCell"];
-//    
 //    NSString *bounceIDsString =[NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://bounceapi.ngrok.com/api/users/%@/bounces/received",receiverID]] encoding:NSUTF8StringEncoding error:nil];
 //    
 //    NSMutableArray * arrayOfBounceIDs = [bounceIDsString objectFromJSONString];
@@ -53,64 +50,62 @@ NSString * receiverID = @"545133ff4a82b5e43b000003";
 //        
 //        
 //        NSMutableDictionary * bounceObject = [bounceObjectsString objectFromJSONString];
-//        NSLog(@"NSLOG OF BOUNCE OBJECT, OBJECT FOR KEY : %@", [bounceObject objectForKey:@"song"]);//STILL GUD
-//        
+//        NSLog(@"NSLOG OF BOUNCE OBJECT, OBJECT FOR KEY : %@", [bounceObject objectForKey:@"song"]);
+//
+//        NSString * SenderOfSongID = [bounceObject objectForKey:@"from"];
+        
+//        NSString * SendersIDString = [NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://bounceapi.ngrok.com/api/users/%@/",SenderOfSongID]] encoding:NSUTF8StringEncoding error:nil];
+//        NSDictionary * SenderOfSong = [SendersIDString objectFromJSONString];
+//        NSString * SendersUsername = [SenderOfSong objectForKey:@"username"];
+//
 //        
 //        NSString *trackIDinJSON = [NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://bounceapi.ngrok.com/api/songs/%@",[bounceObject objectForKey:@"song"]]] encoding:NSUTF8StringEncoding error:nil];
 //        NSDictionary * trackDict = [trackIDinJSON objectFromJSONString];
-//        NSString * trackID = [trackDict objectForKey:@"soundcloud_id"];
-//        NSLog(@"%@",trackID);
-//        
-//        
-//        SoundCloudTrack * track = [[SoundCloudTrack alloc] init];
-//        track.ID = trackID;
-//        [self.SoundCloudTracksList addObject:track];
-//    }
     
-//    [self processTracks];
+//    NSString * trackID = [trackDict objectForKey:@"soundcloud_id"];
+
+    
+        //here set ID to 152171622, 146709958
+    
+    //
+    
+    NSArray * trackIDs = @[@"152171622",@"146709958"];
+    
+    for (NSString * TrackIDString in trackIDs){
+        SoundCloudTrack * track = [[SoundCloudTrack alloc] init];
+        //track.senderOfSong = SendersUsername;
+        track.ID = TrackIDString;
+        NSLog(@"Track ID is: %@\n", track.ID);
+        [self.SoundCloudTracksList addObject:track];
+    }
+    
+
+        [self processTracks];
     
     
+//     Uncomment the following line to preserve selection between presentations.
+//     self.clearsSelectionOnViewWillAppear = NO;
+//    
+//     Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+//     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)processTracks
+{
+    for (SoundCloudTrack * t in self.SoundCloudTracksList){
+        
+        NSString *jsonString =[NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/tracks/%@.json?client_id=%@",SC_API_URL,t.ID,CLIENT_ID]] encoding:NSUTF8StringEncoding error:nil];
+        NSMutableDictionary * songDictionary = [jsonString objectFromJSONString];
+        //NSLog(@"%@",jsonString);
+        t.title = [songDictionary objectForKey:@"title"]; NSLog(@"Title of song: %@", t.title);
+        t.thumbnail = [songDictionary objectForKey:@"artwork_url"];
+        NSMutableDictionary * user = [songDictionary objectForKey:@"user"];
+        t.username = [user objectForKey:@"username"];
+        NSLog(@"\n%@ %@ %@", t.title, t.thumbnail, t.username);
+    }
     
-//    for(int i = 0; i < self.SoundCloudTracksList.count; i++){
-//        
-//        NSString * trackID = self.SoundCloudTracksList.track.ID;
-//        
-//        NSString *jsonString =[NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/tracks/%@/.json?client_id=%@",SC_API_URL,t.ID,CLIENT_ID]] encoding:NSUTF8StringEncoding error:nil];
-//        NSMutableDictionary * songDictionary = [jsonString objectFromJSONString];
-//        t.title = [songDictionary objectForKey:@"title"]; NSLog(@"Title of song: %@", t.title);
-//        t.thumbnail = [songDictionary objectForKey:@"artwork_url"];
-//        t.username = [songDictionary objectForKey:@"username"];
-//        
-//        NSLog(@"\n%@ %@ %@", t.title, t.thumbnail, t.username);
-//    }
-//    
-//    
-//    [self.tableView reloadData];
-//    
-//    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-//}
-//
-//- (void)processTracks
-//{
-//    for(SoundCloudTrack * t in self.SoundCloudTracksList){
-//        
-//        NSString *jsonString =[NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/tracks/%@/.json?client_id=%@",SC_API_URL,t.ID,CLIENT_ID]] encoding:NSUTF8StringEncoding error:nil];
-//        NSMutableDictionary * songDictionary = [jsonString objectFromJSONString];
-//        t.title = [songDictionary objectForKey:@"title"]; NSLog(@"Title of song: %@", t.title);
-//        t.thumbnail = [songDictionary objectForKey:@"artwork_url"];
-//        t.username = [songDictionary objectForKey:@"username"];
-//        
-//        NSLog(@"\n%@ %@ %@", t.title, t.thumbnail, t.username);
-//    }
-//    
-//    
-//    [self.tableView reloadData];
-//}
+    [self.tableView reloadData];
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -142,26 +137,27 @@ NSString * receiverID = @"545133ff4a82b5e43b000003";
     
     }
     
-    cell.albumArtImageView.image = [UIImage imageNamed:@"Nickelgraph.jpg"];
-    cell.nameLabel.text = @"Photograph";
-    cell.artistLabel.text = @"Nickelback";
-    cell.isFromLabel.text = @"nickelbackFan81";
+//    cell.albumArtImageView.image = [UIImage imageNamed:@"Nickelgraph.jpg"];
+//    cell.nameLabel.text = @"Photograph";
+//    cell.artistLabel.text = @"Nickelback";
+//    cell.isFromLabel.text = @"nickelbackFan81";
     
-//    SoundCloudTrack *soundCloudTrack = [self.SoundCloudTracksList objectAtIndex:indexPath.row];
-//    
-//    cell.albumArtImageView.image  = [soundCloudTrack imageToDisplay];
-//    
-//    cell.nameLabel.text = soundCloudTrack.title;
-//    
-//    cell.likeButton.tag = indexPath.row;
-//    
-//    cell.bounceButton.tag = indexPath.row;
-//    
-//    
-//    [cell.likeButton addTarget:self action:@selector(likeSong:) forControlEvents:UIControlEventTouchUpInside];
+    SoundCloudTrack *soundCloudTrack = [self.SoundCloudTracksList objectAtIndex:indexPath.row];
+    
+    cell.albumArtImageView.image  = [soundCloudTrack imageToDisplay];
+    
+    cell.nameLabel.text = soundCloudTrack.title;
+    
+    cell.artistLabel.text = soundCloudTrack.username;
+    
+    cell.likeButton.tag = indexPath.row;
+    
+    cell.bounceButton.tag = indexPath.row;
+    
+    [cell.likeButton addTarget:self action:@selector(likeSong:) forControlEvents:UIControlEventTouchUpInside];
+
+    [cell.bounceButton addTarget:self action:@selector(bounceSong:) forControlEvents:UIControlEventTouchUpInside];
 //
-//    [cell.bounceButton addTarget:self action:@selector(bounceSong:) forControlEvents:UIControlEventTouchUpInside];
-//    
    return cell;
 }
 

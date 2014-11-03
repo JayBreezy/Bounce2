@@ -21,7 +21,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    LoginVC *loginVC = [[LoginVC alloc] init];
+    //LoginVC *loginVC = [[LoginVC alloc] init];
     
     TrackTVC *trackTVC = [[TrackTVC alloc] init];
 

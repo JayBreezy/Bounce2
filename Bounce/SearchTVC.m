@@ -129,9 +129,7 @@
     
     query = [query stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
     
-    NSString *jsonString =[NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/tracks.json?client_id=%@&q=%@",SC_API_URL,CLIENT_ID,query]] encoding:NSUTF8StringEncoding error:nil];
-    
-    
+    NSString *jsonString =[NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/tracks.json?client_id=%@&q=%@",SC_API_URL,CLIENT_ID,query]] encoding:NSUTF8StringEncoding error:nil];    
     
     NSMutableArray *musicArray =[jsonString objectFromJSONString];
     

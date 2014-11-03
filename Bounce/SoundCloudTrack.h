@@ -32,6 +32,9 @@
 
 @property (strong, nonatomic)  NSString * username;
 
+//USED ONLY IN INBOX
+@property (strong, nonatomic) NSString * senderOfSong;
+
 
 - (UIImage *)imageToDisplay;
 

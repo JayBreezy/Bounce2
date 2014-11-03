@@ -248,18 +248,10 @@
 		9EE5115019FDB82500BEF31B /* Inbox View */ = {
 			isa = PBXGroup;
 			children = (
-				9EE5115119FDB90300BEF31B /* Model */,
 				9EE5115219FDB90900BEF31B /* View */,
 				9EE5115319FDB90F00BEF31B /* Controller */,
 			);
 			name = "Inbox View";
-			sourceTree = "<group>";
-		};
-		9EE5115119FDB90300BEF31B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 		9EE5115219FDB90900BEF31B /* View */ = {
@@ -284,17 +276,9 @@
 		9EE5115B19FDD0E100BEF31B /* Likes View */ = {
 			isa = PBXGroup;
 			children = (
-				9EE5115F19FDD13200BEF31B /* Model */,
 				9EE5116019FDD19B00BEF31B /* Controller */,
 			);
 			name = "Likes View";
-			sourceTree = "<group>";
-		};
-		9EE5115F19FDD13200BEF31B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 		9EE5116019FDD19B00BEF31B /* Controller */ = {
